@@ -1,0 +1,30 @@
+18 % number of GSM files
+200 % Gaussian filter radius in km
+SWENSON % Specify the destriping method from options: NONE/SWENSON/CHAMBERS2007/CHAMBERS2012/CHENP3M4/CHENP4M6/DUAN
+GIA_notRemoved % Specify whether GIA effect will be removed, Options: GIA_notRemoved/GIA_Removed_Geru
+ICGEM % Input format, Options: ICGEM/GRACE
+SH 60 cs.mat % Output format, maximum degree/oder, and output file name (resolution), part options: SH_MAT 60 cs/GRID_MAT 60 grid_data 0.25/GRID_MAT 60 grid_data 1 
+/Users/fengwei/study_grace/data/degree_2/C20_RL05.txt % C20 input file, or NAN
+/Users/fengwei/study_grace/data/degree_2/C21_S21_RL05.txt % C21 S21 input file, or NAN
+/Users/fengwei/study_grace/data/degree_2/C22_S22_RL05.txt % C22 S22 input file, or NAN
+/Users/fengwei/study_grace/data/degree_1/deg1_coef.txt % Degree 1 input file, or NAN
+/Users/fengwei/study_grace/data/CSR/RL05_96/GSM/ % Directory of input GRACE GSM files
+/Users/fengwei/study_grace/results/CSR/GSM_matlab_swenson/ % Directory of output files
+GSM-2_2002095-2002120_0021_UTCSR_0096_0005.gfc
+GSM-2_2002123-2002137_0012_UTCSR_0096_0005.gfc
+GSM-2_2002213-2002243_0030_UTCSR_0096_0005.gfc
+GSM-2_2002244-2002273_0029_UTCSR_0096_0005.gfc
+GSM-2_2002274-2002304_0031_UTCSR_0096_0005.gfc
+GSM-2_2002305-2002334_0029_UTCSR_0096_0005.gfc
+GSM-2_2002335-2002365_0030_UTCSR_0096_0005.gfc
+GSM-2_2003001-2003031_0025_UTCSR_0096_0005.gfc
+GSM-2_2003032-2003059_0026_UTCSR_0096_0005.gfc
+GSM-2_2003060-2003090_0030_UTCSR_0096_0005.gfc
+GSM-2_2003091-2003120_0030_UTCSR_0096_0005.gfc
+GSM-2_2003121-2003141_0021_UTCSR_0096_0005.gfc
+GSM-2_2003182-2003212_0031_UTCSR_0096_0005.gfc
+GSM-2_2003213-2003243_0031_UTCSR_0096_0005.gfc
+GSM-2_2003244-2003273_0029_UTCSR_0096_0005.gfc
+GSM-2_2003274-2003304_0031_UTCSR_0096_0005.gfc
+GSM-2_2003305-2003334_0029_UTCSR_0096_0005.gfc
+GSM-2_2003335-2003365_0031_UTCSR_0096_0005.gfc
