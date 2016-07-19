@@ -309,9 +309,9 @@ end
 for ii=1:num_file
     cs_tmp(:,:)         = cs_fltr(ii,:,:);
     if OutputFileFormat_4==1
-        [grid_tmp,~,~]= gshs(cs_tmp,'none','block',180,0,0.,0);
+        grid_tmp=gmt_cs2grid(cs_tmp,0,1);
     elseif OutputFileFormat_4==0.25
-        [grid_tmp,~,~]= gshs(cs_tmp,'none','pole',720,0,0.,0);
+        grid_tmp=gmt_cs2grid(cs_tmp,0,0.25);
     end
     grid_data_grace(:,:,ii) = grid_tmp(:,:);
 end
