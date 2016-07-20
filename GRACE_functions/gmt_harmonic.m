@@ -9,14 +9,26 @@ function [ Amplitude1, Amplitude1_std, Phase1,Phase1_std, Amplitude2, Amplitude2
 %   grid_data_std  the standard deviations of input field
 %
 % OUTPUT:
-%   Amplitude      amplitude of estimated cycle
-%   Amplitude_std  standard deviation of estimated cycle
-%   Phase          phase of estimated cycle, angle of cosine
+%   Amplitude1     amplitude of estimated annual cycle
+%   Amplitude1_std 2*standard deviation of estimated annual amplitude
+%   Phase1         phase of estimated cycle, angle of cosine
+%   Phase1_std     2*standard deviation of estimated phase
+%   Amplitude2     amplitude of estimated semi-annual cycle
+%   Amplitude2_std 2*standard deviation of estimated semi-annual amplitude
+%   Phase2         phase of estimated cycle, angle of cosine
+%   Phase2_std     2*standard deviation of estimated phase
 %   Trend          trend of time series
-%   Trend_std      standard deviation of estimated trend
+%   Trend_std      2*standard deviation of estimated trend
 %   Trend_line     predicted trend line
 %   Interp         predicted trend + seasonal cycles
 %   Resid          residuals after removing trend and seasonal cycles
+%
+% If standard deviations of input field are not provided, the uncertainties 
+% (Amplitude1_std,Phase1_std,Amplitude2_std,Phase2_std, Trend_std) have been estimated 
+% as two standard deviations after propagation of monthly value errors in the least squares fit procedure, 
+% which represent the 95% confidence interval.
+% If standard deviations of input field are not provided, the uncertainties
+% here represent formal errors in the least square fit procedure.
 %
 % FENG Wei 25/03/2015
 % State Key Laboratory of Geodesy and Earth's Dynamics
@@ -155,11 +167,11 @@ if nargin==3
                 Resid(i,j,:) = res;
                 
                 % aposteriori variance estimate: Error^2/(number of obs - number of param)
-                % aposteriori unit weight mean error Ñéºóµ¥Î»È¨ÖĞÎó²î
+                % aposteriori unit weight mean error éªŒåå•ä½æƒä¸­è¯¯å·®
                 var_est = res'*res/(length(time_series) - 6);
                 % aposteriori covariance matrix for estimated parameters from aposteriori
                 % unit weight mean error and co-factor matrix
-                % Ğ­ÒòÊıÕó³ËÒÔµ¥Î»È¨ÖĞÎó²îµÃµ½ÑéºóµÄ¹Û²âÖµÈ¨ÖĞÎó²î¾ØÕó
+                % åå› æ•°é˜µä¹˜ä»¥å•ä½æƒä¸­è¯¯å·®å¾—åˆ°éªŒåçš„è§‚æµ‹å€¼æƒä¸­è¯¯å·®çŸ©é˜µ
                 Exx_scal = var_est*Exx;
                 
                 Trend(i,j)     = x(2);
@@ -283,7 +295,7 @@ elseif nargin==4
                 Resid(i,j,:) = res;
                 
                 % covariance matrix for estimated parameters
-                Exx_scal = Exx; % ÓÃÑéÇ°µÄµ¥Î»È¨ÖĞÎó²î
+                Exx_scal = Exx; % ç”¨éªŒå‰çš„å•ä½æƒä¸­è¯¯å·®
                 
                 Trend(i,j)     = x(2);
                 Trend_std(i,j) = 2*sqrt(Exx_scal(2,2));
