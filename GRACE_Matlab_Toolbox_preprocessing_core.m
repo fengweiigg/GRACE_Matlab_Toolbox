@@ -272,7 +272,7 @@ waitbar(0.8,hwait,'Remove the GIA effect');
 if strcmp(option_gia,'GIA_Removed_Geru')
     % GIA file must be in Matlab Path
     grid_pgr  = gmt_readpgr('GIA_n100_mass_0km.txt'); 
-    cs_pgr = gsha(grid_pgr,'mean','block',lmax);
+    cs_pgr = gmt_grid2cs(grid_pgr,lmax);
     for ii=1:num_file
         cs_tmp(:,:)         = cs_mss(ii,:,:);
         % remove PGR from stokes coefficients
