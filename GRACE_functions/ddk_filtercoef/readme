@@ -1,0 +1,240 @@
+This directory contains (block diagonal) filter coefficients (kusche 2007) for decorrelation of GRACE data.
+File names hint at the content:
+Wbd_2-120.a_1d12p_4: means Block diagonal filter matrix (Wbd_..) for degree 2 untill 120 (..2-120..) with regularization parameter 1e12 (.a1d12) which uses a degree dependent power law l^4 (..p_4)
+The data is also present in an ascii version (.ascii)
+
+
+To repeat the main readme file:
+The filter coefficients are based on a block diagonal approximation of the normal system for the month august in 2003. Together with a signal variance model which behaves as a degree dependent power law one can construct a filter matrix W which is also block diagonal:
+
+
+
+    | W_Cl0   0        0       ..   ..   0         0      |
+    |		                                          |
+    | 0       WCl1     0       ..   ..   0         0      |
+    |                                                     |
+    | 0       0        WSl1    ..   ..   0         0      |
+    |			                                  |
+W = | :       :        :       \    ..   0         0      |
+    |			                                  |
+    | :       :        :       :    \    0         0      |
+    |                                                     | 
+    | 0       0        0       0    0    WCl120    0      |
+    |                                                     |      
+    | 0       0        0       0    0    0         WSl120 |
+    ------------------------------------------------------
+     l=2-120  l=2-120  l=2-120           l=120-120 l=120-120
+     ord=0    ord=1    ord=1  	         ord=120   ord=120  
+     COS      COS      SIN    	    	 COS       SIN
+block 1       2        3                 240       241
+
+	
+
+The sides of W are arranged such that orders and sine or cosine coefficients are grouped in square block diagonal matrices.
+
+W_Clm: means an order block with Cosine coefficients of order m which varies over the degree l. Its side has size lmax-max(lmin,m)+1. 
+
+For our case lmax=120 and lmin=2 meaning that blocks WSl120 and WCl120 have only one entry.
+
+A filtered set of a spherical harmonic set SH can be obtained by matrix multiplication:
+
+SH_filt= W * SH
+
+Where the ordering scheme of the input vector SH follows that of the matrix.
+
+
+
+
+STORAGE SCHEMES and FILES:
+Only the block diagonal part of the filter matrix is stored. This causes a dramatic reduction of storage space. When reading in the data one should NOT expand the matrix to its full size as this will need more than 3Gb of storage. One should therefore apply the filter blockwise.
+
+BINARY form:
+
+Binary Data files may be read in matlab/octave with the script read_BIN.m
+
+On the matlab prompt type:
+
+>> dat=read_BIN('Wbd_2-120.a_1d12p_4')
+
+
+which yields:
+
+dat =
+
+     version: 'BINV2.1 '
+        type: 'BDFULLV0'
+       descr: 'ANISOTROPIC FILTER matrix with power law regularization (alpha*l^pow)           '
+       nval1: 14637
+       nval2: 0
+       pval1: 1180123
+       pval2: 0
+     nblocks: 241
+      ints_d: [6x24 char]
+        ints: [6x1 double]
+      dbls_d: [2x24 char]
+        dbls: [2x1 double]
+     side1_d: [14637x24 char]
+    blockind: [241x1 double]
+       pack1: [1180123x1 double]
+
+
+
+The variable dat is a structure array with the following fields:
+version: version of binary file type ( not relevant)
+type: Type of the matrix, 'BDFULLV0' stands for a block diagonal matrix with no associated vectors
+
+descr: Short description of the data content
+
+nval1: size of the FULL matrix
+
+nval2: unused yet
+
+pval1: size of the stored matrix (packed matrix is stored in a vector with length pval1)
+
+pval2: unused yet
+
+nblocks: amount of diagonal blocks
+
+ints_d: description of the integer meta data 
+
+ints: integer meta data
+
+dbls_d: description  of the double meta data
+
+dbls: double meta data
+
+side1_d: description of the elements of the side of the FULL matrix
+	In case of spherical harmonics the description tag is
+	TSN DEGORD or TCN DEGORD where DEG is the three digit degree and ORD is the 3 digit order of the coefficient. 
+	One can retrieve the degree and order from the character array by the matlab command deg=str2num(dat.side1_d(:,4:7)) and
+	ord=str2num(dat.side1_d(:,8:10))
+ 
+	TCN denotes a cosine coefficient and TSN a sine coefficient		
+	
+blockind: array with indices of the last row(or column) of each block. For example:
+	block n  is the submatrix: FULL(blockind(n-1)+1:blockind(n),blockind(n-1)+1:blockind(n))
+	NOTE: blockind(0) is not present but should be considered zero. The blocks are stored in the order as shown in the matrix above.
+	Thus block 1 corresponds to WCl0 and block 241 corresponds to WSl120
+
+pack1: Block diagonal matrix in packed form. Blocks are stored sequentially in column major order
+	so block n starts at:
+	             n-1
+	nstart = 1+ SUM    sz(i)^2
+	             i=1
+
+	Where the sz(i) is the size of the ith block side: 
+	
+	sz(i)=blockind(i)-blockind(i-1)
+	
+
+	and ends at:
+
+	nend= nstart+ sz(n))^2	
+
+	In matlab one can reshape the section of pack1 into a square matrix by the command:
+	blockn=reshape(dat.pack1(nstart:nend),sz(n),sz(n))
+
+As a check for a correct read one can display the  first 5 values of the pack1 matrix by issuing the following commands on the matlab prompt:
+
+>> format long
+>> dat=read_BIN('Wbd_2-120.a_1d12p_4');
+>> dat.pack1(1:5)
+
+ans =
+
+   0.999995413476564
+   0.000000054102768
+   0.000000668145433
+  -0.000000013374350
+   0.000000077291901
+
+
+
+ASCII form:
+For those who rather live in the ascii version of the universe. These are provided as well.
+
+
+The start of the file (here Wbd_2-120.a_1d12p_4.ascii) contains a header which looks like:
+
+----------------------------------------------------------
+MATRIX type: BDFULLV0
+ Version: BINV2.1
+ Block diagonal full matrix in packed storage,           0  associated vectors
+ Amount of diagonal blocks:          241
+ Full matrix dimensions:       14637  x        14637
+ stored matrix dimensions:     1180123  x            1
+ File description:
+ ANISOTROPIC FILTER matrix with power law regularization (alpha*l^pow)
+
+ META data:           6 integers           2 doubles
+ INTEGER META data:
+           1 Nobs                          259200
+           2 Nunknows                       14637
+           3 Lmax                             120
+           4 Lmin                               2
+           5 Modnr                              1
+           6 Nblocks                          241
+ DOUBLE META data:
+           1 Plaw_power:                4.00000000000000
+           2 Plaw_scale:                1000000000000.00
+------------------------------------------------------------
+
+And then the lines with the actual data follow. These lines start with the parameter descriptor (24 characters+space) and then the rows of the associated block diagonal matrix. Thus each line has the fortran format:
+'(a24,1x,nG18.10)' where n is determined from the order m of the parameter:
+n = lmax-max(lmax,m)+1.
+
+An example:
+The first data line looks like:
+
+-------------------------------------------------------------
+
+
+
+GCN 002000          GRA1   0.9999954135      0.2738952610E-06  0.1069032692E-04 -0.5224355550E-06  0.6260643950E-05 -0.2529754723E-06  0.5785777694E-05 -0.2812225549E-06  0.5661255422E-05 -0.4108148140E-06  0.5880415072E-05 -0.2520621455E-06  0.6564091048E-05 -0.2873077754E-06 0.7142068107E-05 -0.7879605399E-06  0.7957491746E-05 -0.8383880718E-06  0.8822729338E-05 -0.1024217044E-05  0.8556817806E-05 -0.9286718914E-06  0.9933876654E-05  0.1323641917E-05  0.1311566463E-04 -0.3210652386E-06  0.1169252456E-04 -0.7157279166E-05  0.1285949556E-04 -0.3087251728E-05  0.2373884172E-04  0.5747279353E-05  0.2073765689E-04 -0.4300054084E-05  0.5826770334E-05 -0.9102278432E-05  0.2048844072E-04  0.7068233947E-05  0.4203132386E-04 -0.1860112974E-06  0.2853953089E-04 -0.2035841969E-04  0.2012637863E-04 -0.5364372950E-05  0.3374593933E-04  0.1229250820E-04  0.3132218994E-04  0.2314693643E-05  0.2277267650E-04 -0.5572539708E-05  0.2803849099E-04 -0.3683744270E-05  0.2957190118E-04 -0.2300195315E-05  0.2442339905E-04  0.2807764534E-05  0.1995235890E-04  0.4522431898E-05  0.1220848007E-04 -0.7767107831E-06  0.9152572787E-05  0.1190645398E-06  0.1460992860E-04  0.3441223261E-05  0.1253436675E-04 -0.1169855623E-05  0.3282275419E-05 -0.2873797702E-05  0.2397732360E-05  0.2969778483E-05  0.5201387975E-05  0.3210741568E-05  0.1730980612E-05 -0.2016232906E-05 -0.9096819526E-06 -0.1928875900E-05  0.1208974395E-05  0.8781590127E-06  0.9972440190E-06  0.1973326468E-06 -0.1798916521E-05 -0.8828228463E-06 -0.2148790493E-05 -0.2077111533E-06 -0.1105554677E-05 -0.1616825981E-06 -0.1141518422E-05 -0.7243310512E-06 -0.1485000167E-05 -0.6885777690E-06 -0.1694730673E-05 -0.5137288393E-06 -0.1869862629E-05 -0.3422138064E-06 -0.1596776911E-05 -0.1705660149E-06 -0.1357183533E-05 -0.4834708069E-06 -0.1534771069E-05  -0.7489699253E-06 -0.1414665619E-05 -0.3734662307E-06 -0.1060106451E-05 -0.1357411223E-06 -0.1166528965E-05 -0.3940320990E-06 -0.1309255560E-05 -0.4276062932E-06 -0.9884294332E-06 -0.2074159742E-06 -0.7420619604E-06 -0.2463464371E-06 -0.8320765650E-06 -0.3526071454E-06 -0.8249666175E-06 -0.2351043600E-06 -0.6591733308E-06 -0.1374958560E-06 -0.5889275820E-06
+
+
+-------------------------------------------
+The 24 character long parameter description GCN 002000          GRA1 denotes the C20 coefficient. And this parameter has only nonzero filter values in the diagonal block WCl0 which has a side with size lmax-max(lmin,m)+1= 119. Thus the first record contains a 24 character descriptor and 119 floating point values in exponential notation.
+
+
+The parameters associated with GSN 002000          GRA1 are not provided in the file.
+
+
+The final lines of the file look like:
+
+-------------------------------------------------
+
+GCN 119119          GRA1   0.5300723813E-08  0.2345403902E-09
+GCN 120119          GRA1   0.2268195606E-09  0.1279500593E-07
+GSN 119119          GRA1   0.5299766941E-08  0.2343772169E-09
+GSN 120119          GRA1   0.2266617588E-09  0.1276066267E-07
+GCN 120120          GRA1   0.4470718654E-08
+GSN 120120          GRA1   0.4470444478E-08
+
+-----------------------------------------------------------
+
+
+
+
+
+Should the values be different or for other general questions I suggest contacting me:
+
+-- 
+Roelof Rietbroek
+
+Astronomische, Physikalische und Mathematische 
+Geodäsie, 
+Institut für Geodäsie und Geoinformation
+Zimmer 306, Nußallee 17
+53115 Bonn
+
+Telefon: +49(0)22873-3577
+fax: 	  +49(0)22873-3029
+E-Mail:  roelof@geod.uni-bonn.de
+
+----------------------------------------
+
+
+
+
+	
