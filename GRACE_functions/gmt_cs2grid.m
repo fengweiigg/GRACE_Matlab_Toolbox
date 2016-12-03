@@ -5,16 +5,18 @@ function [grid_filter]=gmt_cs2grid(cs,radius_filter,type,destrip_method)
 % INPUT:
 %   cs                C_lm & S_lm in CS format (spherical harmonic coefficients)
 %   radius_filter     Radius of Gaussian smoothing, unit: km
-%   type              grid's interval, options: 0.25 degree or 1 degree, equi-angular grid N*2N
+%   type              grid's interval, options: 0.25, 0.5 or 1 degree
 %   destrip_method    destriping methods, options: NONE, SWENSON, CHAMBERS2007,CHAMBERS2012, CHENP3M6, CHENP4M6, DUAN
 % 
 % OUTPUT:
-%   grid_filter       equi-angular grid N*2N, N=180 or 720
+%   grid_filter       
 % 
 % FENG Wei 11/06/2016
 % State Key Laboratory of Geodesy and Earth's Dynamics
 % Institute of Geodesy and Geophysics, Chinese Academy of Sciences
 % fengwei@whigg.ac.cn
+%
+% add 0.5 degree interval 2/12/2016 Wei Feng
 
 if nargin < 2, radius_filter = 0; end % default Gaussian filter radius is zero
 if nargin < 3, type = 1; end % default 1 degree interval
@@ -27,8 +29,10 @@ if ndims(cs)==3  % cs is the series of CS matrixes
         grid_filter        = zeros(180,360,size_a);
     elseif type==0.25
         grid_filter        = zeros(721,1440,size_a);
+    elseif type==0.5
+        grid_filter        = zeros(360,720,size_a);
     else
-        error('Wrong input type: 1 or 0.25');
+        error('Wrong input type: 1, 0.5 or 0.25');
     end
     % Do destriping
     for ii=1:size_a
@@ -49,6 +53,10 @@ if ndims(cs)==3  % cs is the series of CS matrixes
             c11cmn=[0 90 359.75 -90];
             lmcosi_fltr=gmt_cs2lmcosi(cs_fltr); % change the CS format
             grid_tmp=plm2xyz(lmcosi_fltr,type,c11cmn);
+        elseif type==0.5
+            c11cmn=[0.25 89.75 359.75 -89.75];
+            lmcosi_fltr=gmt_cs2lmcosi(cs_fltr); % change the CS format
+            grid_tmp=plm2xyz(lmcosi_fltr,type,c11cmn);
         end
         grid_filter(:,:,ii) = grid_tmp(:,:);
     end
@@ -59,8 +67,10 @@ if ndims(cs)==2 % cs is the one CS matrix
         grid_filter        = zeros(180,360);
     elseif type==0.25
         grid_filter        = zeros(721,1440);
+    elseif type==0.5
+        grid_filter        = zeros(360,720);
     else
-        error('Wrong input type: 1 or 0.25');
+        error('Wrong input type: 1, 0.5 or 0.25');
     end
     % Do destriping
     cs_destrip = gmt_destriping(cs,destrip_method);
@@ -75,10 +85,11 @@ if ndims(cs)==2 % cs is the one CS matrix
         c11cmn=[0 90 359.75 -90];
         lmcosi_fltr=gmt_cs2lmcosi(cs_fltr); % change the CS format
         grid_filter=plm2xyz(lmcosi_fltr,type,c11cmn);
+    elseif type==0.5
+        c11cmn=[0.25 89.75 359.75 -89.75];
+        lmcosi_fltr=gmt_cs2lmcosi(cs_fltr); % change the CS format
+        grid_filter=plm2xyz(lmcosi_fltr,type,c11cmn);
         
     end
 end
-
 end
-
-
