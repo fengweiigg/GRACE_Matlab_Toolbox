@@ -59,7 +59,7 @@ dir_in          = fscanf(fid,'%s',1);
 dir_out         = fscanf(fid,'%s',1);
 % Check files and directories
 if ~exist(dir_c20,'file') && ~strcmp(dir_c20,'NAN')
-    warndlg('Degree C20 file does not exist!','Warning');
+    warndlg('Degree C20 file does not exist! Note: Blanks and no-English characters should be removed from the directory!','Warning');
     return;
 end
 if ~exist(dir_c21_s21,'file') && ~strcmp(dir_c21_s21,'NAN')
