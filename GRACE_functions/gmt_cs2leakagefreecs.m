@@ -71,7 +71,8 @@ if ndims(cs_masked)==3  % 3-D matrix
     % Do Gaussian smoothing
     for ii=1:num_file
         cs_tmp(:,:)         = cs_destrip(ii,:,:);
-        cs_leakage=gmt_gaussian_filter(cs_tmp,radius_filter);
+        %cs_leakage=gmt_gaussian_filter(cs_tmp,radius_filter); % remove the bug
+        cs_leakage(ii,:,:)=gmt_gaussian_filter(cs_tmp,radius_filter); % 19/6/2018 insert (ii,:,:)
     end
     % Do destriping
     for ii=1:num_file
@@ -81,7 +82,8 @@ if ndims(cs_masked)==3  % 3-D matrix
     % Do Gaussian smoothing
     for ii=1:num_file
         cs_tmp(:,:)         = cs_destrip(ii,:,:);
-        cs_before_leakage=gmt_gaussian_filter(cs_tmp,radius_filter);
+        %cs_before_leakage=gmt_gaussian_filter(cs_tmp,radius_filter); % remove the bug
+        cs_before_leakage(ii,:,:)=gmt_gaussian_filter(cs_tmp,radius_filter);% 19/6/2018 insert (ii,:,:)
     end    
     
 end
