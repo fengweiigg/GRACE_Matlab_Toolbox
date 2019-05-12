@@ -46,8 +46,8 @@ if  strcmp(type,'ICGEM')
         sc_sigma_tmp(l(i)+1,degree_max+1-m(i)) = Slm_sigma(i);
         sc_sigma_tmp(l(i)+1,degree_max+1+m(i)) = Clm_sigma(i);
     end
-    cs_tmp=sc2cs(sc_tmp);
-    cs_sigma_tmp=sc2cs(sc_sigma_tmp);
+    cs_tmp=gmt_sc2cs(sc_tmp);
+    cs_sigma_tmp=gmt_sc2cs(sc_sigma_tmp);
     % Get SH coefficients
     cs = cs_tmp(1:lmax+1,1:lmax+1);
     cs_sigma= cs_sigma_tmp(1:lmax+1,1:lmax+1);
