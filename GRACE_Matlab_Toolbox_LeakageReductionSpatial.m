@@ -196,7 +196,7 @@ if FilterIndex==1 && isfield(handles,'cs') % create output file
     elseif get(handles.RadiobuttonDuan,'value')
         option_destriping='DUAN';
     end
-    radius_filter=get(handles.EditFilterRadius,'String');
+    radius_filter=str2double(get(handles.EditFilterRadius,'String'));
     cs=gmt_cs2leakagefreecs(handles.cs,type,option_destriping,radius_filter);
 
     save(strcat(InputPathname, InputFilename),'cs');
