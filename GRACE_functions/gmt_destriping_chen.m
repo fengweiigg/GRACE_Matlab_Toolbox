@@ -62,23 +62,22 @@ for mm = start_ord:end_ord
         clm = sc(n+1,maxdeg+1+mm)';
         slm = sc(n+1,maxdeg+1-mm)';
         % fit a  polynomial
-        poly_clm = polyfit(n,clm,poly_ord);
-        poly_slm = polyfit(n,slm,poly_ord);
-        
-        clm_col_s(n+1,1) = polyval(poly_clm,n);
-        slm_col_s(n+1,1) = polyval(poly_slm,n);
+        % 02/25/2022, Yu Zhang, use centering and scaling in fitting,
+        % otherwise Warning: Polynomial is badly conditioned for P4M6
+        [poly_clm,~,mu] = polyfit(n,clm,poly_ord);
+        clm_col_s(n+1,1) = polyval(poly_clm,n,[],mu);
+        [poly_slm,~,mu] = polyfit(n,slm,poly_ord);
+        slm_col_s(n+1,1) = polyval(poly_slm,n,[],mu);
                
         % odd(even) degree
         n=mm+1:2:maxdeg;
         clm = sc(n+1,maxdeg+1+mm)';
         slm = sc(n+1,maxdeg+1-mm)';
         % fit a  polynomial
-        poly_clm = polyfit(n,clm,poly_ord);
-        poly_slm = polyfit(n,slm,poly_ord);
-        
-        clm_col_s(n+1,1) = polyval(poly_clm,n);
-        slm_col_s(n+1,1) = polyval(poly_slm,n);
-        
+        [poly_clm,~,mu] = polyfit(n,clm,poly_ord);
+        clm_col_s(n+1,1) = polyval(poly_clm,n,[],mu);
+        [poly_slm,~,mu] = polyfit(n,slm,poly_ord);
+        slm_col_s(n+1,1) = polyval(poly_slm,n,[],mu);
         
         sc_s(:,maxdeg+1+mm) = clm_col_s;
         sc_s(:,maxdeg+1-mm) = slm_col_s;    
