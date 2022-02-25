@@ -41,7 +41,7 @@ elseif strcmp(destrip_method,'CHENP3M6')
     sc_destrip = gmt_destriping_chen(field,'CHENP3M6');
     cs_destrip=gmt_sc2cs(sc_destrip);
 elseif strcmp(destrip_method,'CHENP4M6')
-    sc_destrip = gmt_destriping_chen(field,'CHENP4M6');
+    sc_destrip = gmt_destriping_chen(field,'CHENP4M6'); % 02/22/2022, Yu Zhang, fix a bug here
     cs_destrip=gmt_sc2cs(sc_destrip);
 elseif strcmp(destrip_method,'DUAN')
     pair1=35;
