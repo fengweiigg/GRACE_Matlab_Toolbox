@@ -11,3 +11,8 @@ Our recent papers on groundwater storage variations using this toolbox are:
 (2)	Feng W., M. Zhong, J.-M. Lemoine, R. Biancale, H.-T. Hsu, J. Xia, Evaluation of groundwater depletion in North China using the Gravity Recovery and Climate Experiment (GRACE) data and ground-based measurements, Water Resources Research, 2013, doi:10.1002/wrcr.20192
 
 We also appreciate it if you refer to these papers in your publications.
+
+
+-- Change History --
+
+02/21/2022, Yu Zhang, fix a bug in gmt_destriping for choosing CHENP4M6 method
