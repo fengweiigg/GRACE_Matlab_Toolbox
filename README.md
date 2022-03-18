@@ -15,4 +15,7 @@ We also appreciate it if you refer to these papers in your publications.
 
 -- Change History --
 
+02/25/2022, Yu Zhang, use centering and scaling in curve fitting in gmt_destriping_chen,
+            otherwise Warning: Polynomial is badly conditioned for P4M6
+
 02/21/2022, Yu Zhang, fix a bug in gmt_destriping for choosing CHENP4M6 method
