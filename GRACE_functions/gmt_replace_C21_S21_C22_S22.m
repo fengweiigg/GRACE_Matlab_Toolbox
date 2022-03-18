@@ -37,7 +37,7 @@ if strcmp(FILE_NAME,'C21_S21_RL05') || strcmp(FILE_NAME,'C22_S22_RL05')
     head_index=0;
     fid = fopen(dir_in,'r');
     tline = fgetl(fid);
-    while strcmp(tline(1:2),'#')
+    while strcmp(tline(1:1),'#')    % 03/17/2022, Yu Zhang, change tline(1:2) to tline(1:1)
         head_index = head_index+1;
         tline = fgetl(fid);
     end
