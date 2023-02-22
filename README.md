@@ -19,3 +19,6 @@ We also appreciate it if you refer to these papers in your publications.
             otherwise Warning: Polynomial is badly conditioned for P4M6
 
 02/21/2022, Yu Zhang, fix a bug in gmt_destriping for choosing CHENP4M6 method
+
+03/17/2022, Yu Zhang, fix a bug in gmt_replace_C21_S21_C22_S22, change "while strcmp(tline(1:2),'#')" to
+                "while strcmp(tline(1:1),'#')"
