@@ -4,12 +4,12 @@ SWENSON
 GIA_Removed_Geru
 GRACE
 SH_MAT 60 cs_gsm_csr_swenson_2002_2014_fltr300km
-/Users/fengwei/matlab/GRACE_Matlab_Toolbox/GRACE_data/Degree_2/C20_RL05.txt
+GRACE_data/Degree_2/C20_RL05.txt
 NAN
 NAN
-/Users/fengwei/matlab/GRACE_Matlab_Toolbox/GRACE_data/Degree_1/deg1_coef.txt
-/Users/fengwei/matlab/GRACE_Matlab_Toolbox/GRACE_data/RL05/CSR/GSM_grace_60/
-/Users/fengwei/matlab/GRACE_Matlab_Toolbox/GRACE_results/
+GRACE_data/Degree_1/deg1_coef.txt
+GRACE_data/RL05/CSR/GSM_grace_60/
+GRACE_results/
 GSM-2_2002095-2002120_0021_UTCSR_0060_0005
 GSM-2_2002123-2002137_0012_UTCSR_0060_0005
 GSM-2_2002213-2002243_0030_UTCSR_0060_0005
